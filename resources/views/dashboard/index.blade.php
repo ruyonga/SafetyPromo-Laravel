@@ -48,35 +48,32 @@
 
                                         <div class="btn-group" role="group"
                                              aria-label="Button group with nested dropdown">
-                                            <button type="button"
-                                                    class="btn {{ $code->active  ? "btn-success" : "btn-danger" }}"> {{$code->code? "Active": "Deactivated"}} </button>
+                                            <button type="button" class="btn {{ $code->active  ? "btn-success" : "btn-danger" }}"> {{ $code->active ? "Active": "Deactivated"}} </button>
                                             <div class="btn-group" role="group">
                                                 <button id="btnGroupDrop1" type="button"
                                                         class="btn {{ $code->active  ? "btn-success" : "btn-danger" }}  dropdown-toggle"
                                                         data-toggle="dropdown" aria-haspopup="true"
                                                         aria-expanded="false"></button>
                                                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                                    <a class="dropdown-item" href="#"
-                                                       onclick="event.preventDefault(); setStatusInputValueAndSubmitForm('true');">Activate</a>
-                                                    <a class="dropdown-item" href="#"
-                                                       onclick="event.preventDefault(); setStatusInputValueAndSubmitForm('false');">Deactivate</a>
+                                                    <a class="dropdown-item" href="#"  onclick=" event.preventDefault(); setStatusInputValueAndSubmitForm('true');">Activate</a>
+                                                    <a class="dropdown-item" href="#"   onclick="  event.preventDefault(); setStatusInputValueAndSubmitForm('false');">Deactivate</a>
                                                 </div>
-                                            </div><div style="display: none;">
-                                                {!! Form::open(['method' => 'PATCH', 'action' => ['DashboardController@updateStatus', $code->_id], 'id' => 'status-form']) !!}
-                                                {{ csrf_field() }}
-                                                {{ Form::hidden('new_status', null, ['id' => 'input_status']) }}
-                                                {!! Form::close() !!}
                                             </div>
 
                                         </div>
 
+                                        <div style="display: none;">
+                                            {!! Form::open(['method'=>'PATCH','action' => ['DashboardController@updateStatus', 'id'=> $code->_id], 'id' => 'status-form']) !!}
+                                            {{ csrf_field() }}
+                                            {{ Form::hidden('active', null, ['id' => 'input_status']) }}
+                                            {!! Form::close() !!}
+                                        </div>
 
                                     </td>
                                 </tr>
                             @endforeach
                             </tbody>
                         </table>
-
 
                     </div>
                     <div class="col-md-4">
@@ -96,20 +93,21 @@
         </div>
     </div>
 @stop
-@section('scripts')
+
     <script type="text/javascript">
+
+
+        function setStatusInputValueAndSubmitForm(val) {
+            console.log(val);
+            document.getElementById('input_status').setAttribute('value', val);
+            document.getElementById('status-form').submit();
+        }
+
 
         $(document).ready(function () {
             $('#code-table').DataTable();
         });
 
 
-        function setStatusInputValueAndSubmitForm(val) {
-            document.getElementById('input_status').setAttribute('value', val);
-            document.getElementById('status-form').submit();
-        }
-
     </script>
-
-@stop
 

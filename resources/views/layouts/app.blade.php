@@ -11,10 +11,13 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
+
     <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/popper.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
+
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 
-    <script src="{{ asset('js/app.js') }}"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -142,14 +145,14 @@
             @if(Session::has('message'))
                 <div class="alert alert-success background-success" style="width: 65%;">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <i class="far fa-times-circle text-white"></i>
+                        <i class="far fa-times-circle text-white"></i>x
                     </button>
                     {{ Session::get('message') }}
                 </div>
             @elseif(Session::has('error'))
                 <div class="alert alert-success background-danger"  style="width: 65%;">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <i class="far fa-times-circle text-white"></i>
+                        <i class="far fa-times-circle text-white"></i>x
                     </button>
                     {{ Session::get('error') }}
                 </div>
@@ -158,7 +161,7 @@
             @elseif(Session::has('warning'))
                 <div class="alert alert-success background-warning"  style="width: 65%;">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <i class="far fa-times-circle text-white"></i>
+                        <i class="far fa-times-circle text-white"></i>x
                     </button>
                     {{ Session::get('warning') }}
                 </div>

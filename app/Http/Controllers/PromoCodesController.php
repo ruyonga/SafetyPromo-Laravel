@@ -27,30 +27,35 @@ class PromoCodesController extends Controller
 
             $promo = json_decode($response->getBody()->getContents());
 
-            //dd($promo);
+//            //dd($promo);
             $sm = new StaticMap();
             $sm->setKey('AIzaSyC_fwl5oXjcI8ssGd_2QW-RX1tFjkLUCUs')
-                ->setCenter([$promo->event->coordinates[1], $promo->event->coordinates[0]])
-                ->setZoom(8);
+                ->setSize('600x600')
+                ->setCenter([0.3476,32.5825])
+                ->setMarkers('')
+                ->setZoom(13);
 
 
             $pickup = [$request->input('lato'), $request->input('lngo')];
             $dropoff = [$request->input('latd'), $request->input('lngd')];
+
             $points = [$pickup, $dropoff];
 
             $path = new Path();
-            $path->setBorderColor("0xe8dd10")
-                ->setFillColor("0x1f0fd8")
+            $path
                 ->setPath($points);
 
+
             $sm->addPath($path);
+
+
 
 
             Session::flash('Message', "Code is valid");
             Session::flash('alert-class', 'alert-success');
 
 
-            return view('promocode.index')->with('code',json_decode($response->getBody()->getContents()));
+            return view('promocode.show')->with('code',$promo)->with('polym', $sm->generateUrl())->with('path', $path);
 
 
         } catch (GuzzleException $e) {

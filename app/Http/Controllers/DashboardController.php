@@ -118,8 +118,32 @@ class DashboardController extends Controller
     public function updateStatus(Request $request, $id)
     {
 
-             dd($request);
 
-        return redirect()->route('dashboard');
+
+        try {
+
+            $response = $this->makeCon()->put('promotions/status/'.$id, [RequestOptions::JSON => $request->request->all()]);
+
+
+            /**
+             * Pass to the blade a message and a bootstrap alert class time
+             */
+            if($response->getStatusCode() == 204){
+                Session::flash('message', "Promo code status changed ");
+                Session::flash('alert-class', 'alert-success');
+
+
+            }
+
+            return redirect()->route('dashboard');
+
+        } catch (GuzzleException $e) {
+            Session::flash('error', "Failed to update record" . $e->getMessage());
+            Session::flash('alert-class', 'alert-danger');
+
+            return back()->withInput();
+
+        }
+
     }
 }

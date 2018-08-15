@@ -17,19 +17,7 @@
 
             </div>
             <div class="col-md-6">
-                <div class="card border-primary mb-3" style="max-width: 100rem;">
-                    <div class="card-header ">Results</div>
-                    <div class="card-body">
-                       <img src="">
-                       <ul>
-                           <li> <h3> Code: {{ isset($code->code)? $code->code: null  }}</h3></li>
-                           <li>Value: {{ isset($code->value)? $code->value: null }}</li>
-                           <li>Expiry date {{ date('F d, Y', strtotime(isset($code->expirydate)? $code->expirydate : null))}}</li>
 
-                       </ul>
-
-                    </div>
-                </div>
             </div>
         </div>
     </div>
