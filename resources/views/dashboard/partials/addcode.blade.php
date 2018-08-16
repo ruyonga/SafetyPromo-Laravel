@@ -13,7 +13,7 @@
 
 <div class="form-group{{ $errors->has('dob') ? ' has-error' : '' }}">
     {!! Form::label('expirydate', 'Code Expiry date:', ['class' => 'control-label']) !!}
-    {!! Form::text('expirydate',isset($promocode) && !is_null($promocode) ? $promocode->expirydate : null, ['class' => 'form-control', 'required', 'id' => 'dobdatepicker']) !!}
+    {!! Form::text('expirydate',isset($promocode) && !is_null($promocode) ? $promocode->expirydate : null, ['class' => ' date form-control', 'required', 'id' => 'dobdatepicker']) !!}
     @if($errors->has('expirydate'))
         <span class="help-block">
       <strong>{{ $errors->first('expirydate') }}</strong></span>
@@ -78,7 +78,7 @@
 <div class="form-group">
     <div class="row">
         <div class="col-md-12">
-            {!! Form::submit($submitButtonText, ['class' => 'btn btn-success col-md-6']) !!}
+            {!! Form::submit($submitButtonText, ['class' => 'btn btn-danger col-md-6']) !!}
         </div>
     </div>
 </div>

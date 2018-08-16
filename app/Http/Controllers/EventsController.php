@@ -13,7 +13,7 @@ class EventsController extends Controller
 
     public function store(Request $request){
         try {
-            $response = $this->makeCon()->post('promotions', [RequestOptions::JSON => $request->request->all()]);
+            $response = $this->makeCon()->post('promocode', [RequestOptions::JSON => $request->request->all()]);
 
 
             /**

@@ -31,6 +31,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/createcode', 'PromoCodesController@create')->name('createcodes');
     Route::get('/challenge', 'PromoCodesController@index')->name('challenge');
+    Route::get('/activecode', 'PromoCodesController@activecodes')->name('activecode');
     Route::post('/challenge', 'PromoCodesController@process')->name('process');
 
 

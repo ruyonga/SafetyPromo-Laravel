@@ -9,14 +9,20 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-
     <!-- Scripts -->
-
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
-    <script src="{{ asset('js/popper.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
 
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/datatables.min.js') }}"></script>
+
+    <script src="{{ asset('js/popper.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/datepicker.js') }}"></script>
+
+
+
+
+
 
 
     <!-- Fonts -->
@@ -26,7 +32,9 @@
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset("css/flatt.css") }}" />
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
+    <link href="{{ asset('css/datepicker.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/datatables.css') }}" rel="stylesheet">
+   
 
 
     <script type="text/javascript">
@@ -39,12 +47,12 @@
 
 
             autocomplete2 = new google.maps.places.Autocomplete(
-                (document.getElementById('origin')),
+                (document.getElementById('origin1')),
                 {types: ['geocode']});
 
 
             autocomplete3 = new google.maps.places.Autocomplete(
-                (document.getElementById('destination')),
+                (document.getElementById('destination1')),
                 {types: ['geocode']});
 
             // When the user selects an address from the dropdown, populate the address
@@ -115,6 +123,9 @@
                             <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                         </li>
                         @else
+                            <a class="navbar-brand" href="{{ url('/activecode') }}">
+                                Get Active codes
+                            </a>
                             <a class="navbar-brand" href="{{ url('/challenge') }}">
                                 The Challenge
                             </a>
@@ -150,7 +161,7 @@
                     {{ Session::get('message') }}
                 </div>
             @elseif(Session::has('error'))
-                <div class="alert alert-success background-danger"  style="width: 65%;">
+                <div class="alert alert-danger background-danger"  style="width: 65%;">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <i class="far fa-times-circle text-white"></i>x
                     </button>
@@ -159,7 +170,7 @@
 
 
             @elseif(Session::has('warning'))
-                <div class="alert alert-success background-warning"  style="width: 65%;">
+                <div class="alert alert-warning background-warning"  style="width: 65%;">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <i class="far fa-times-circle text-white"></i>x
                     </button>
@@ -176,9 +187,8 @@
 
     </div>
 
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHnFZwdY119wn-9japTETbV6f3imYsWkQ&libraries=places&callback=initAutocomplete" async defer></script>
-<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHnFZwdY119wn-9japTETbV6f3imYsWkQ&libraries=places&callback=initAutocomplete" async defer></script>
 
 </body>
 </html>

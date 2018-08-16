@@ -18,7 +18,7 @@ class DashboardController extends Controller
     {
 
         try {
-            $promocodes = $this->makeCon()->get('promotions')->getBody()->getContents();
+            $promocodes = $this->makeCon()->get('promocode')->getBody()->getContents();
 
 
             return view('dashboard.index')->with('codes', json_decode($promocodes));
@@ -37,7 +37,7 @@ class DashboardController extends Controller
     public function show($id)
     {
         try {
-            $promotions = $this->makeCon()->get('promotions/' . $id);
+            $promotions = $this->makeCon()->get('promocode/' . $id);
 
             /**
              * Pass to the blade a message and a bootstrap alert class time
@@ -62,14 +62,13 @@ class DashboardController extends Controller
                 //dd($promo);
                 $sm = new StaticMap();
                 $sm->setKey('AIzaSyC_fwl5oXjcI8ssGd_2QW-RX1tFjkLUCUs')
-                    ->setCenter([$promo->location->coordinates[1], $promo->location->coordinates[0]])
+                    ->setCenter([$promo->event->coordinates[1], $promo->event->coordinates[0]])
                     ->setZoom(18);
 
 
                 $marker2 = new Marker();
-                $marker2->addLocation([$promo->location->coordinates[1], $promo->location->coordinates[0]])
-                    ->setAnchor('center')
-                    ->setIcon('');
+                $marker2->addLocation([$promo->event->coordinates[1], $promo->event->coordinates[0]])
+                    ->setAnchor('center');
                 $sm->addMarker($marker2);
 
 
@@ -92,7 +91,7 @@ class DashboardController extends Controller
     public function store(Request $request)
     {
         try {
-            $response = $this->makeCon()->post('promotions', [RequestOptions::JSON => $request->request->all()]);
+            $response = $this->makeCon()->post('promocode', [RequestOptions::JSON => $request->request->all()]);
 
 
             /**
@@ -119,10 +118,9 @@ class DashboardController extends Controller
     {
 
 
-
         try {
 
-            $response = $this->makeCon()->put('promotions/status/'.$id, [RequestOptions::JSON => $request->request->all()]);
+            $response = $this->makeCon()->put('promocode/status/'.$id, [RequestOptions::JSON => $request->request->all()]);
 
 
             /**

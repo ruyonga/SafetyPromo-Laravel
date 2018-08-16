@@ -13,57 +13,103 @@ class PromoCodesController extends Controller
 {
     //
 
-    public  function index(){
+    public function index()
+    {
         return view('promocode.index')->with('code');
     }
 
-
-    public function process(Request $request){
-
+    /**
+     * Check for valid cards from the apis, use the response to generate the static map
+     * cj
+     * @param Request $request
+     * @return $this
+     */
+    public function process(Request $request)
+    {
 
 
         try {
-            $response = $this->makeCon()->post('validate', [RequestOptions::JSON => $request->request->all()]);
+            $response = $this->makeCon()->post('promocode/validate', [RequestOptions::JSON => $request->request->all()]);
 
             $promo = json_decode($response->getBody()->getContents());
-
-//            //dd($promo);
+//
             $sm = new StaticMap();
             $sm->setKey('AIzaSyC_fwl5oXjcI8ssGd_2QW-RX1tFjkLUCUs')
                 ->setSize('600x600')
-                ->setCenter([0.3476,32.5825])
+                ->setCenter([0.3476, 32.5825])
                 ->setMarkers('')
                 ->setZoom(13);
 
 
+            //Generate teh points for the polma
             $pickup = [$request->input('lato'), $request->input('lngo')];
             $dropoff = [$request->input('latd'), $request->input('lngd')];
 
             $points = [$pickup, $dropoff];
 
             $path = new Path();
-            $path
-                ->setPath($points);
-
-
+            $path->setPath($points);
             $sm->addPath($path);
-
-
 
 
             Session::flash('Message', "Code is valid");
             Session::flash('alert-class', 'alert-success');
 
 
-            return view('promocode.show')->with('code',$promo)->with('polym', $sm->generateUrl())->with('path', $path);
+            return view('promocode.show')->with('code', $promo)->with('polym', $sm->generateUrl())->with('path', $path);
 
 
         } catch (GuzzleException $e) {
-            Session::flash('error', "error code processing request " . $e->getMessage());
+            if ($e->getCode() == 400) {
+                /*
+                    if the code is out of radius
+                */
+
+                return view('error')->with('error', "Code can only be used within a limited radius to the venue");
+            } else if ($e->getCode() == 402) {
+                /*
+                    if the code is already used
+                */
+
+                return view('error')->with('error', "Promo Code is invalid or already used");
+
+            }
+            Session::flash('error', "error code processing request ");
             Session::flash('alert-class', 'alert-danger');
 
             return back()->withInput();
 
         }
     }
+
+
+    /**
+     * Method to return active codes from the api
+     * @return $this|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function activecodes()
+    {
+
+        try {
+            $promocodes = $this->makeCon()->get('promocode');
+
+            if ($promocodes->getStatusCode() == 200) {
+                $activecoded = json_decode($promocodes->getBody()->getContents());
+                return view('promocode.activecodes')->with('codes', $activecoded);
+            } else {
+                return view('error');
+            }
+
+        } catch (GuzzleException $e) {
+
+            Session::flash('error', "An error occurred processing request " . $e->getMessage());
+            Session::flash('alert-class', 'alert-danger');
+
+
+            return view('error')->with('error', "Something bad happened");
+        }
+
+
+    }
+
 }
