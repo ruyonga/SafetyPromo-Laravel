@@ -5,7 +5,32 @@
                     <div class="row">
                         <div class="col-md-8">
                                   <div class="card border-warning" >
-                                        <div class="card-header bg-warning text-white">Generat Codes</div>
+                                        <div class="card-header bg-warning text-white">Generated Codes
+                                            <div style="display: none;">
+                                                {!! Form::open(['method'=>'POST','action' => ['DashboardController@updateall'], 'id' => 'status-form']) !!}
+                                                {{ csrf_field() }}
+
+                                                    {{ Form::hidden('active', 'false') }}
+                                                    {{ Form::hidden('expired','true') }}
+
+
+                                            </div>
+                                            <button type="submit"   class="btn  btn-danger" style="float:right;"> Deactivated All </button>
+                                            {!! Form::close() !!}
+                                            <div style="display: none;">
+                                                {!! Form::open(['method'=>'POST','action' => ['DashboardController@updateall'], 'id' => 'status-form']) !!}
+                                                {{ csrf_field() }}
+
+                                                {{ Form::hidden('active', 'true') }}
+                                                {{ Form::hidden('expired','false') }}
+
+
+                                            </div>
+                                            <button type="submit"   class="btn  btn-success" style="float:right; margin-left: 1%;"> Activated All </button>
+                                            {!! Form::close() !!}
+
+
+                                        </div>
                                             <div class="card-body ">
                                                 <table class="table table-hover table-responsive" id="example">
                                                     <thead>
@@ -83,9 +108,7 @@
                     }
                     $(document).ready(function(){
 
-                        $('.date').datepicker({
-                            format: 'mm-dd-yyyy'
-                        });
+                       ''
                         $('#example').DataTable(); });
 
                 </script>

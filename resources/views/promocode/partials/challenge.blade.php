@@ -6,7 +6,7 @@
 
     @if($errors->has('code'))
         <span class="help-block">
-                    <strong>{{ $errors->first('name') }}</strong>
+                    <strong>{{ $errors->first('code') }}</strong>
                 </span>
     @endif
 </div>

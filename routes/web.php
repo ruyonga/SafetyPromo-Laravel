@@ -26,6 +26,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard/{eventid}', 'DashboardController@show')->name('promotions');
     Route::post('/generate', 'DashboardController@store')->name('generate');
     Route::patch('/dashboard/status/{codeid}', 'DashboardController@updateStatus')->name('updatestatus');
+    Route::post('/dashboard/updateall', 'DashboardController@updateall')->name('updateall');
 
 
 

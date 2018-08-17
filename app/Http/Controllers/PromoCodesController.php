@@ -22,7 +22,7 @@ class PromoCodesController extends Controller
      * Check for valid cards from the apis, use the response to generate the static map
      * cj
      * @param Request $request
-     * @return $this
+     * @return \Illuminate\View\View
      */
     public function process(Request $request)
     {
@@ -42,8 +42,8 @@ class PromoCodesController extends Controller
 
 
             //Generate teh points for the polma
-            $pickup = [$request->input('lato'), $request->input('lngo')];
-            $dropoff = [$request->input('latd'), $request->input('lngd')];
+            $pickup = [$promo->origin->coordinates['0'], $promo->origin->coordinates['1'], ];
+            $dropoff = [$promo->destination->coordinates['0'], $promo->destination->coordinates['1']];
 
             $points = [$pickup, $dropoff];
 
@@ -74,7 +74,7 @@ class PromoCodesController extends Controller
                 return view('error')->with('error', "Promo Code is invalid or already used");
 
             }
-            Session::flash('error', "error code processing request ");
+            Session::flash('error', "error code processing request ", $e->getMessage());
             Session::flash('alert-class', 'alert-danger');
 
             return back()->withInput();
@@ -85,16 +85,18 @@ class PromoCodesController extends Controller
 
     /**
      * Method to return active codes from the api
-     * @return $this|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function activecodes()
     {
 
         try {
-            $promocodes = $this->makeCon()->get('promocode');
+            $promocodes = $this->makeCon()->get('getactivecodes');
 
             if ($promocodes->getStatusCode() == 200) {
                 $activecoded = json_decode($promocodes->getBody()->getContents());
+
+
                 return view('promocode.activecodes')->with('codes', $activecoded);
             } else {
                 return view('error');
